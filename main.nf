@@ -3,7 +3,8 @@ process sourmash_gather {
 
     cpus 2
     memory 512.MB
-    time "${((n_reads.toInteger() * 1.2 * 6e-07) as int) + 60}s"
+    time 1.h
+    // time "${((n_reads * 1.2 * 6e-07) as int) + 120}s"
 
     publishDir 'qc/sourmash', mode: "copy"
 
@@ -19,14 +20,15 @@ process sourmash_gather {
     "touch ${name}.sourmash.csv"
 
     script:
-    scale_factor = 0.01
+    scale_factor = 1000000/n_reads
+    scale_factor = scale_factor > 1.0 ? 1.0 : scale_factor
     run_str = """
         zcat ${r1} ${r2} \
         | seqtk seq \
             -f ${scale_factor} \
             - \
         | sourmash sketch dna \
-            -p k=31,abund,scaled=1000 \
+            -p k=31,abund,scaled=100 \
             -o ${name}.sig \
             - \
         && sourmash gather \
