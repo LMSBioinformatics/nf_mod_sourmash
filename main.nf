@@ -8,6 +8,7 @@ process sourmash_gather {
 
     publishDir 'qc/sourmash', mode: "copy"
 
+    beforeScript "module reset"
     module params.sourmash._module
 
     input:
