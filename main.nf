@@ -23,21 +23,20 @@ process sourmash_gather {
     script:
     scale_factor = 1000000/n_reads
     scale_factor = scale_factor > 1.0 ? 1.0 : scale_factor
-    run_str = """
-        zcat ${r1} ${r2} \
-        | seqtk seq \
-            -f ${scale_factor} \
-            - \
-        | sourmash sketch dna \
-            -p k=31,abund,scaled=100 \
-            -o ${name}.sig \
-            - \
-        && sourmash gather \
-            --threshold-bp 1000 \
-            --create-empty-results \
-            -o ${name}.sourmash.csv \
-            ${name}.sig \
-            /opt/resources/apps/sourmash/*.sig
-        """
-    run_str.stripIndent()
+    """
+zcat ${r1} ${r2} \
+| seqtk seq \
+    -f ${scale_factor} \
+    - \
+| sourmash sketch dna \
+    -p k=31,abund,scaled=100 \
+    -o ${name}.sig \
+    - \
+&& sourmash gather \
+    --threshold-bp 1000 \
+    --create-empty-results \
+    -o ${name}.sourmash.csv \
+    ${name}.sig \
+    /opt/resources/apps/sourmash/*.sig
+"""
 }
