@@ -6,7 +6,8 @@ process sourmash_gather {
     time 1.h
     // time "${((n_reads * 1.2 * 6e-07) as int) + 120}s"
 
-    publishDir 'qc/sourmash', mode: "copy"
+    publishDir "${params.outdir}/qc/sourmash",
+        mode: "copy"
 
     beforeScript "module reset"
     module params.sourmash._module
