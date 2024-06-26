@@ -2,7 +2,7 @@ process sourmash_gather {
     tag "${name}"
 
     cpus 2
-    memory 512.MB
+    memory 1.GB
     time 1.h
     // time "${((n_reads * 1.2 * 6e-07) as int) + 120}s"
 
