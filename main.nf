@@ -9,14 +9,14 @@ process sourmash_gather {
     publishDir "${params.outdir}/qc/sourmash",
         mode: "copy"
 
-    beforeScript "module reset"
+    beforeScript "module reset &> /dev/null"
     module params.sourmash._module
 
     input:
     tuple val(name), path(r1), path(r2), val(n_reads)
 
     output:
-    path '*.sourmash.csv'
+    path '*.sourmash.csv', emit: files
 
     stub:
     "touch ${name}.sourmash.csv"
