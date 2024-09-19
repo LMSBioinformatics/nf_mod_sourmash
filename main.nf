@@ -22,7 +22,7 @@ process sourmash_gather {
     "touch ${name}.sourmash.csv"
 
     script:
-    scale_factor = 1000000/max(n_reads, 1)
+    scale_factor = 1000000/Math.max(n_reads, 1)
     scale_factor = scale_factor > 1.0 ? 1.0 : scale_factor
     """
 zcat ${r1} ${r2} \
@@ -38,6 +38,7 @@ zcat ${r1} ${r2} \
     --create-empty-results \
     -o ${name}.sourmash.csv \
     ${name}.sig \
-    /opt/resources/apps/sourmash/*.sig
+    /opt/resources/apps/sourmash/*.sig \
+|| touch ${name}.sourmash.csv
 """
 }
